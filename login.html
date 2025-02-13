@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Connexion</title>
+    <link rel="stylesheet" href="./assets/LoginStyle.css">
+</head>
+<body>
+    <header>
+        <h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
+        <nav>
+            <ul>
+                <li>projets</li>
+                <li>contact</li>
+                <li>login</li>
+                <li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <div class="login">
+            <h1 class="titrelog">Log In</h1>
+            <form action="login.php" method="post" class="form">
+                <p class="email">E-mail</p>
+                <input type="text" name="username" placeholder="" required="required" />
+                <p class="password">Mot de passe</p>
+                <input type="password" name="password" placeholder="" required="required" />
+                <button type="submit" class="btn btn-primary btn-block btn-large">Se Connecter</button>
+                <a href="" class="mdpoublier">Mot de passe oublié</a>
+            </form>
+        </div>
+    </main>
+</html>
