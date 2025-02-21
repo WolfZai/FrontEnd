@@ -22,12 +22,16 @@
             <h1 class="titrelog">Log In</h1>
             <form action="login.php" method="post" class="form">
                 <p class="email">E-mail</p>
-                <input type="text" name="username" placeholder="" required="required" />
+                <input type="text" id="email" name="username" value="" required="required" />
                 <p class="password">Mot de passe</p>
-                <input type="password" name="password" placeholder="" required="required" />
-                <button type="submit" class="btn btn-primary btn-block btn-large">Se Connecter</button>
+                <input type="password" id="mdp" name="password" placeholder="" required="required" />
+                <button type="submit" id="button" class="btn btn-primary btn-block btn-large">Se Connecter</button>
                 <a href="" class="mdpoublier">Mot de passe oublié</a>
             </form>
+            <p id="error"></p>
         </div>
     </main>
+    <script src="./assets/loginscript.js"></script>
+</body>
 </html>
+<!-- type="submit" -->

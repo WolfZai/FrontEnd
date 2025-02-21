@@ -150,3 +150,10 @@ li:hover {
 	font-size: 14px;
 	font-weight: 500;
 }
+
+#error {
+	color: red;
+	font-family: 'Work Sans', sans-serif;
+	font-size: 14px;
+	font-weight: 500;
+}
