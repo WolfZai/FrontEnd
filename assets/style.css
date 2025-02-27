@@ -144,11 +144,10 @@ li:hover {
 	cursor: pointer;
 }
 
-.category a:hover {
+.category a:hover, .category a.active {
 	background-color: #1D6154;
 	color: white;
 }
-
 .gallery {
 	width: 100%;
 	display: grid;
