@@ -48,15 +48,46 @@ table {
 }
 /** end reset css**/
 body {
-	max-width: 1140px;
-	margin:auto;
+	max-width: 1440px;
+	margin: auto;
 	font-family: 'Work Sans' ;
 	font-size: 14px;
 }
+
+.edit-mode {
+	display: none;
+	flex-direction: row;
+	justify-content: center;
+	top: 0;
+	right: 0;
+	left: 0;
+	gap: 10px;
+	background-color: black;
+	color: white;
+	padding: 10px 20px;
+}
+
+.active {
+	display: flex;
+}
+
+.edit-mode p  {
+	display: flex;
+	position: relative;
+	align-items: center;
+	justify-content: center;
+	color: white;
+}
+
 header {
 	display: flex;
 	justify-content: space-between;
-	margin: 50px 0
+	padding: 50px 0;
+	margin: 0 30px;
+}
+
+main {
+	margin: 0 30px;
 }
 section {
 	margin: 50px 0

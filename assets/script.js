@@ -5,10 +5,12 @@ function Init() {
 
 let logout = document.getElementById("connexion");
 let categoriesContainer = document.querySelector(".category");
+let bandeauHeader = document.getElementById("edit-mode");
 
 if (localStorage.getItem("token")) {
   logout.innerText = "logout";
   console.log(localStorage.getItem("token"));
+  bandeauHeader.classList.add("active");
   categoriesContainer.style.display = "none";
 } else {
   logout.innerText = "login";
@@ -20,6 +22,7 @@ logout.addEventListener("click", function () {
     window.location.href = "./login.html";
   } else {
     localStorage.removeItem("token");
+    bandeauHeader.classList.remove("active");
     logout.innerText = "login";
     categoriesContainer.style.display = "flex";
   }
