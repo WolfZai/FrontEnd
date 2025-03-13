@@ -18,6 +18,50 @@
 		<i class="fa-regular fa-pen-to-square"></i>
 		<p class="ecritmode">Mode édition</p>
 	</div>
+<div class="modal-container">
+	<div class="overlay modal-trigger"></div>
+	<div class="modal">
+		<button class="close-modal modal-trigger">X</button>
+		<h1>Galerie photo</h1>
+		<div class="workmodal">
+			<!-- <span class="delete">
+				<i class="fas fa-trash-alt"></i>
+			</span> -->
+		</div>
+		<hr class="trait"/>
+		<button id="picture" class="add-photo modal-change">Ajouter une photo</button>
+	</div>
+</div>
+<div class="container-modal">
+	<div class="overlay modal-trigger-second"></div>
+	<div class="second-modal modal">
+		<button class="return-modal modal-trigger arrow">
+			<i class="fa-solid fa-arrow-left"></i>
+		</button>
+		<button class="close-modal modal-trigger-second">X</button>
+		<h1>Ajout photo</h1>
+	<form id="uploadform">
+		<div class="ajoutphoto">
+			<img src="./assets/images/sophie-bluel.png" alt="sophie-bluel" id="photo">
+			<i class="fa-regular fa-image image"></i>
+			<input type="file" id="file" accept="image/png, image/jpg, image/jpeg" required>
+			<label for="file" id="imagebtn">+ Ajouter photo</label>
+			<p>jpg, png: 4mo max</p>
+		</div>
+		<p class="titre">Titre</p>
+		<input type="text" id="title" class="select" name="title" required>
+		<p class="titre">Catégorie</p>
+		<select name="category" id="category" required>
+			<!-- <option value=""></option>
+			<option value="Objets">Objets</option>
+			<option value="Appartements">Appartements</option>
+			<option value="Hotels & restaurants">Hotels & restaurants</option> -->
+		</select>
+		<hr class="trait"/>
+		<button type="submit" class="add-photo">Valider</button>
+	</form>
+	</div>
+</div>
 <header>
 	<h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
 	<nav>
@@ -42,7 +86,13 @@
 		</article>
 	</section>
 	<section id="portfolio">
-		<h2>Mes Projets</h2>
+		<div class="projetmodal">
+		    <h2>Mes Projets</h2>
+			<div class="modifmodal">
+			    <i class="fa-regular fa-pen-to-square pen-square"></i>
+		        <a class="modal-btn modal-trigger">Modifier</a>
+		    </div>
+		</div>
 		<div class="category">
 			<!-- <a class="active filtre">Tous</a>
 			<a id="objet" class="filtre">Objets</a>
