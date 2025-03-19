@@ -274,7 +274,7 @@ li:hover {
 
 .workmodal img {
 	width: 100%;
-	height: max-content;
+	height: 100px;
 	margin-bottom: 20px;
 }
 
@@ -300,6 +300,10 @@ li:hover {
 	background: #1D6154;
 	color: white;
 	font-family: Work Sans, sans-serif;
+}
+
+.modal .add-photo:disabled {
+	background-color: #B3B3B3;
 }
 
 .ajoutphoto {

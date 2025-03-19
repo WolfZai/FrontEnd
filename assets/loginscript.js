@@ -20,7 +20,7 @@ baliseButton.addEventListener("click", async function loginClick(event) {
     if (response.ok) {
       const data = await response.json();
       console.log(data);
-      localStorage.setItem("token", data.token);
+      localStorage.setItem("Token", data.token);
       window.location.href = "./index.html";
     } else {
       document.getElementById("error").innerText =

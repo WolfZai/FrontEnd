@@ -1,173 +1,126 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
 	<meta charset="UTF-8">
 	<title>Sophie Bluel - Architecte d'intérieur</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Work+Sans&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Work+Sans&display=swap"
+		rel="stylesheet">
 	<meta name="description" content="">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
-        integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
-        crossorigin="anonymous" referrerpolicy="no-referrer">
+		integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+		crossorigin="anonymous" referrerpolicy="no-referrer">
 	<link rel="stylesheet" href="./assets/style.css">
 </head>
+
 <body>
 	<div id="edit-mode" class="edit-mode">
 		<i class="fa-regular fa-pen-to-square"></i>
 		<p class="ecritmode">Mode édition</p>
 	</div>
-<div class="modal-container">
-	<div class="overlay modal-trigger"></div>
-	<div class="modal">
-		<button class="close-modal modal-trigger">X</button>
-		<h1>Galerie photo</h1>
-		<div class="workmodal">
-			<!-- <span class="delete">
-				<i class="fas fa-trash-alt"></i>
-			</span> -->
+	<div class="modal-container">
+		<div class="overlay modal-trigger"></div>
+		<div class="modal">
+			<button class="close-modal modal-trigger">X</button>
+			<h1>Galerie photo</h1>
+			<div class="workmodal">
+			</div>
+			<hr class="trait" />
+			<button id="picture" class="add-photo modal-change">Ajouter une photo</button>
 		</div>
-		<hr class="trait"/>
-		<button id="picture" class="add-photo modal-change">Ajouter une photo</button>
 	</div>
-</div>
-<div class="container-modal">
-	<div class="overlay modal-trigger-second"></div>
-	<div class="second-modal modal">
-		<button class="return-modal modal-trigger arrow">
-			<i class="fa-solid fa-arrow-left"></i>
-		</button>
-		<button class="close-modal modal-trigger-second">X</button>
-		<h1>Ajout photo</h1>
-	<form id="uploadform">
-		<div class="ajoutphoto">
-			<img src="./assets/images/sophie-bluel.png" alt="sophie-bluel" id="photo">
-			<i class="fa-regular fa-image image"></i>
-			<input type="file" id="file" accept="image/png, image/jpg, image/jpeg" required>
-			<label for="file" id="imagebtn">+ Ajouter photo</label>
-			<p>jpg, png: 4mo max</p>
+	<div class="container-modal">
+		<div class="overlay modal-trigger-second"></div>
+		<div class="second-modal modal">
+			<button class="return-modal modal-trigger arrow">
+				<i class="fa-solid fa-arrow-left"></i>
+			</button>
+			<button class="close-modal modal-trigger-second">X</button>
+			<h1>Ajout photo</h1>
+			<form id="uploadform">
+				<div class="ajoutphoto error">
+					<img src="./assets/images/sophie-bluel.png" alt="sophie-bluel" id="photo">
+					<i class="fa-regular fa-image image"></i>
+					<input type="file" id="file" accept="image/png, image/jpg, image/jpeg">
+					<label for="file" id="imagebtn">+ Ajouter photo</label>
+					<p>jpg, png: 4mo max</p>
+				</div>
+				<p class="titre">Titre</p>
+				<input type="text" id="title" class="title select error" name="title">
+				<p class="titre">Catégorie</p>
+				<select name="category" id="category" class="error">
+				</select>
+				<hr class="trait" />
+				<button type="submit" class="add-photo" id="valider">Valider</button>
+			</form>
 		</div>
-		<p class="titre">Titre</p>
-		<input type="text" id="title" class="select" name="title" required>
-		<p class="titre">Catégorie</p>
-		<select name="category" id="category" required>
-			<!-- <option value=""></option>
-			<option value="Objets">Objets</option>
-			<option value="Appartements">Appartements</option>
-			<option value="Hotels & restaurants">Hotels & restaurants</option> -->
-		</select>
-		<hr class="trait"/>
-		<button type="submit" class="add-photo">Valider</button>
-	</form>
 	</div>
-</div>
-<header>
-	<h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
-	<nav>
-		<ul>
-			<li>projets</li>
-			<li>contact</li>
-			<li id="connexion">login</li>
-			<li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
-		</ul>
-	</nav>
-</header>
-<main>
-	<section id="introduction">
-		<figure>
-			<img src="./assets/images/sophie-bluel.png" alt="">
-		</figure>
-		<article>
-			<h2>Designer d'espace</h2>
-			<p>Je raconte votre histoire, je valorise vos idées. Je vous accompagne de la conception à la livraison finale du chantier.</p>
-			<p>Chaque projet sera étudié en commun, de façon à mettre en valeur les volumes, les matières et les couleurs dans le respect de l’esprit des lieux et le choix adapté des matériaux. Le suivi du chantier sera assuré dans le souci du détail, le respect du planning et du budget.</p>
-			<p>En cas de besoin, une équipe pluridisciplinaire peut-être constituée : architecte DPLG, décorateur(trice)</p>
-		</article>
-	</section>
-	<section id="portfolio">
-		<div class="projetmodal">
-		    <h2>Mes Projets</h2>
-			<div class="modifmodal">
-			    <i class="fa-regular fa-pen-to-square pen-square"></i>
-		        <a class="modal-btn modal-trigger">Modifier</a>
-		    </div>
-		</div>
-		<div class="category">
-			<!-- <a class="active filtre">Tous</a>
-			<a id="objet" class="filtre">Objets</a>
-			<a class="filtre">Appartements</a>
-			<a class="filtre">Hotels & restaurants</a> -->
-		</div>
-		<div class="gallery">
-			<!-- <figure>
-				<img src="assets/images/abajour-tahina.png" alt="Abajour Tahina">
-				<figcaption>Abajour Tahina</figcaption>
-			</figure>
+	<header>
+		<h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
+		<nav>
+			<ul>
+				<li>projets</li>
+				<li>contact</li>
+				<li id="connexion">login</li>
+				<li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
+			</ul>
+		</nav>
+	</header>
+	<main>
+		<section id="introduction">
 			<figure>
-				<img src="assets/images/appartement-paris-v.png" alt="Appartement Paris V">
-				<figcaption>Appartement Paris V</figcaption>
+				<img src="./assets/images/sophie-bluel.png" alt="">
 			</figure>
-			<figure>
-				<img src="assets/images/restaurant-sushisen-londres.png" alt="Restaurant Sushisen - Londres">
-				<figcaption>Restaurant Sushisen - Londres</figcaption>
-			</figure>
-			<figure>
-				<img src="assets/images/la-balisiere.png" alt="Villa “La Balisiere” - Port Louis">
-				<figcaption>Villa “La Balisiere” - Port Louis</figcaption>
-			</figure>
-			<figure>
-				<img src="assets/images/structures-thermopolis.png" alt="Structures Thermopolis">
-				<figcaption>Structures Thermopolis</figcaption>
-			</figure>
-			<figure>
-				<img src="assets/images/appartement-paris-x.png" alt="Appartement Paris X">
-				<figcaption>Appartement Paris X</figcaption>
-			</figure>
-			<figure>
-				<img src="assets/images/le-coteau-cassis.png" alt="Pavillon “Le coteau” - Cassis">
-				<figcaption>Pavillon “Le coteau” - Cassis</figcaption>
-			</figure>
-			<figure>
-				<img src="assets/images/villa-ferneze.png" alt="Villa Ferneze - Isola d’Elba">
-				<figcaption>Villa Ferneze - Isola d’Elba</figcaption>
-			</figure>
-			<figure>
-				<img src="assets/images/appartement-paris-xviii.png" alt="Appartement Paris XVIII">
-				<figcaption>Appartement Paris XVIII</figcaption>
-			</figure>
-			<figure>
-				<img src="assets/images/bar-lullaby-paris.png" alt="Bar “Lullaby” - Paris">
-				<figcaption>Bar “Lullaby” - Paris</figcaption>
-			</figure>
-			<figure>
-				<img src="assets/images/hotel-first-arte-new-delhi.png" alt="Hotel First Arte - New Delhi">
-				<figcaption>Hotel First Arte - New Delhi</figcaption>
-			</figure> -->
-		</div>
-	</section>
-	<section id="contact">
-		<h2>Contact</h2>
-		<p>Vous avez un projet ? Discutons-en !</p>
-		<form action="#" method="post">
-			<label for="name">Nom</label>
-			<input type="text" name="name" id="name">
-			<label for="email">Email</label>
-			<input type="email" name="email" id="email">
-			<label for="message">Message</label>
-			<textarea name="message" id="message" cols="30" rows="10"></textarea>
-			<input type="submit" value="Envoyer">
-		</form>
-	</section>
-</main>
+			<article>
+				<h2>Designer d'espace</h2>
+				<p>Je raconte votre histoire, je valorise vos idées. Je vous accompagne de la conception à la livraison
+					finale du chantier.</p>
+				<p>Chaque projet sera étudié en commun, de façon à mettre en valeur les volumes, les matières et les
+					couleurs dans le respect de l’esprit des lieux et le choix adapté des matériaux. Le suivi du
+					chantier sera assuré dans le souci du détail, le respect du planning et du budget.</p>
+				<p>En cas de besoin, une équipe pluridisciplinaire peut-être constituée : architecte DPLG,
+					décorateur(trice)</p>
+			</article>
+		</section>
+		<section id="portfolio">
+			<div class="projetmodal">
+				<h2>Mes Projets</h2>
+				<div class="modifmodal">
+					<i class="fa-regular fa-pen-to-square pen-square"></i>
+					<a class="modal-btn modal-trigger">Modifier</a>
+				</div>
+			</div>
+			<div class="category">
+			</div>
+			<div class="gallery">
+			</div>
+		</section>
+		<section id="contact">
+			<h2>Contact</h2>
+			<p>Vous avez un projet ? Discutons-en !</p>
+			<form action="#" method="post">
+				<label for="name">Nom</label>
+				<input type="text" name="name" id="name">
+				<label for="email">Email</label>
+				<input type="email" name="email" id="email">
+				<label for="message">Message</label>
+				<textarea name="message" id="message" cols="30" rows="10"></textarea>
+				<input type="submit" value="Envoyer">
+			</form>
+		</section>
+	</main>
 
-<footer>
-	<nav>
-		<ul>
-			<li>Mentions Légales</li>
-		</ul>
-	</nav>
-</footer>
-<script src="./assets/script.js"></script>
+	<footer>
+		<nav>
+			<ul>
+				<li>Mentions Légales</li>
+			</ul>
+		</nav>
+	</footer>
+	<script src="./assets/script.js"></script>
 </body>
+
 </html>

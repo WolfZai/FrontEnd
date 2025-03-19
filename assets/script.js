@@ -3,6 +3,8 @@ function Init() {
   fetchCategories();
   removeModal();
   SelectOption();
+  removeError();
+  uploadFormulaire();
 }
 
 let logout = document.getElementById("connexion");
@@ -10,9 +12,9 @@ let categoriesContainer = document.querySelector(".category");
 let bandeauHeader = document.getElementById("edit-mode");
 let modalContainer = document.querySelector(".modifmodal");
 
-if (localStorage.getItem("token")) {
+if (localStorage.getItem("Token")) {
   logout.innerText = "logout";
-  console.log(localStorage.getItem("token"));
+  console.log(localStorage.getItem("Token"));
   bandeauHeader.classList.add("active");
   categoriesContainer.style.display = "none";
   modalContainer.style.display = "flex";
@@ -26,7 +28,7 @@ logout.addEventListener("click", function () {
   if (logout.innerText === "login") {
     window.location.href = "./login.html";
   } else {
-    localStorage.removeItem("token");
+    localStorage.removeItem("Token");
     bandeauHeader.classList.remove("active");
     logout.innerText = "login";
     categoriesContainer.style.display = "flex";
@@ -147,7 +149,7 @@ function deleteWork(id) {
   fetch(`http://localhost:5678/api/works/${id}`, {
     method: "DELETE",
     headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
+      Authorization: `Bearer ${localStorage.getItem("Token")}`,
     },
   })
     .then((response) => {
@@ -187,6 +189,30 @@ function removeModal() {
   });
 }
 
+function resetImageAndForm() {
+  if (display) {
+    display.src = "";
+    display.classList.remove("active");
+  }
+}
+function closeAllModals() {
+  const containerModal = document.querySelector(".container-modal");
+  const modalContainer = document.querySelector(".modal-container");
+
+  if (containerModal && containerModal.classList.contains("active")) {
+    containerModal.classList.remove("active");
+  }
+
+  if (modalContainer && modalContainer.classList.contains("active")) {
+    modalContainer.classList.remove("active");
+  }
+
+  if (display && display.classList.contains("active")) {
+    display.classList.remove("active");
+    display.src = "";
+  }
+}
+
 const fileInput = document.getElementById("file");
 const fileImg = document.getElementById("imagebtn");
 
@@ -219,7 +245,7 @@ if (fileInput && fileImg) {
 function SelectOption() {
   const selectElement = document.getElementById("category");
 
-  const optionDefaut = document.createElement("option")
+  const optionDefaut = document.createElement("option");
   optionDefaut.value = "";
   optionDefaut.textContent = "";
   selectElement.appendChild(optionDefaut);
@@ -242,197 +268,131 @@ function SelectOption() {
     .catch((error) =>
       console.error("erreur lors de la récup des categories", error)
     );
-};
+}
 
-// function Formulaire() {
+const titre = document.querySelector(".title");
+const categories = document.getElementById("category");
+const divPhoto = document.querySelector(".ajoutphoto");
+const formError = document.querySelectorAll(".error");
+let imageDelete = document.getElementById("file");
+
+function removeError() {
+  divPhoto.classList.remove("error");
+  titre.classList.remove("error");
+  categories.classList.remove("error");
+}
+
+function isAuthenticated() {
+  return localStorage.getItem("Token") !== null;
+}
+
+const photoInput = document.getElementById("file");
+const titleInput = document.getElementById("title");
+const categoryInput = document.getElementById("category");
 let uploadForm = document.querySelector("form");
-console.log(uploadForm);
+const submitButton = uploadForm.querySelector('button[type="submit"]');
 
-uploadForm.addEventListener("submit", function(e){
-  e.preventDefault();
-  
-  
-  // // let divError = document.querySelector(".ajoutphoto");
-  // // let photoUpload = document.getElementById("file")
-  // let titreInput = document.getElementById("title");
-  // // let myRegex = /^[a-zA-Z-\s]+$/;
-  // // let categorySelect = document.getElementById("category")
+function checkButton() {
+  const photoNull = photoInput.files.length > 0;
+  const titreNull = titleInput.value.trim() !== "";
+  const categoryNull = categoryInput.value !== "";
 
-  // if (titreInput.value.trim() == "") {
-  //   titreInput.classList.add("error");
-  //   console.log("ajoute bien la class error");
-  // }
-})
-// }
+  submitButton.disabled = !(photoNull && titreNull && categoryNull);
+
+  console.log(
+    "Photo: ",
+    photoNull,
+    "Titre: ",
+    titreNull,
+    "Catégorie: ",
+    categoryNull
+  );
+  console.log("Bouton désactiver: ", submitButton.disabled);
+}
+
+async function addWork(formData) {
+  try {
+    if (!isAuthenticated()) {
+      alert("Vous devez être connecté pour ajouter un projet");
+      window.location.href = "./login.html";
+      return null;
+    }
+    const response = await fetch("http://localhost:5678/api/works", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("Token")}`,
+      },
+      body: formData,
+    });
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => null);
+      throw new Error(
+        `Erreur: ${response.status} - ${
+          errorData?.message || "Echec de la création du work"
+        }`
+      );
+    }
+    const newWork = await response.json();
+    return newWork;
+  } catch (error) {
+    console.error("Erreur lors de l'ajout du work:", error);
+    alert(`Echec de l'ajout: ${error.message}`);
+    return null;
+  }
+}
+
+function uploadFormulaire() {
+  submitButton.disabled = true;
+
+  photoInput.addEventListener("change", checkButton);
+  titleInput.addEventListener("input", checkButton);
+  categoryInput.addEventListener("change", checkButton);
+
+  checkButton();
+
+  uploadForm.addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    if (!isAuthenticated()) {
+      alert("Vous devez être connecté pour ajouter un projet");
+      window.location.href = "./login.html";
+      return;
+    }
+
+    removeError();
+
+    let isValid = true;
+
+    if (isValid) {
+      const formData = new FormData();
+      formData.append("image", photoInput.files[0]);
+      formData.append("title", titleInput.value);
+      formData.append("category", categoryInput.value);
+
+      const originalButtonText = submitButton.value;
+      submitButton.value = "Chargement...";
+
+      addWork(formData)
+        .then((newWork) => {
+          if (newWork) {
+            alert("Projet ajouté avec succès!");
+
+            allWorks.push(newWork);
+            displayFilterWorks(allWorks);
+            displayModalWorks(allWorks);
+
+            resetImageAndForm();
+            closeAllModals();
+            uploadForm.reset();
+
+            checkButton();
+          }
+        })
+        .finally(() => {
+          submitButton.value = originalButtonText;
+        });
+    }
+  });
+}
 
 Init();
-
-// display.classList.toggle("active")
-/* <figcaption>${data[i].title}</figcaption> */
-// fetch("http://localhost:5678/api/works")
-//   .then((response) => response.json())
-//   .then((data) => {
-//     console.log(data);
-//     for (let i = 0; i < data.length; i++) {
-//       const work = document.createElement("figure");
-//       work.className = "work";
-//       work.innerHTML = `
-//     <img src="${data[i].imageUrl}" alt="${data[i].title}" />
-//     <figcaption>${data[i].title}</figcaption>
-//   `;
-//       document.querySelector(".workmodal").appendChild(work);
-//     }
-//   });
-
-// function secondModal() {
-//   modalContainer.classList.remove("active");
-//   containerModal.classList.remove("active");
-// }
-
-// function displayModalWorks(modalWorks) {
-//   const modalContainer = document.querySelector(".modal-container");
-//   modalContainer.innerHTML = "";
-
-//   modalWorks.forEach((work) => {
-//     const modalWork = document.createElement("figure");
-//     modalWork.className = "work";
-
-//     const modalImg = document.createElement("img");
-//     modalImg.src = work.imageUrl;
-//     modalImg.alt = work.title;
-
-//     modalImg.style.width = "100%";
-//     modalImg.style.height = "auto";
-//     modalImg.style.objectFit = "cover";
-
-//     const modalTitle = document.createElement("figcaption");
-//     modalTitle.textContent = work.title;
-
-//     modalWork.appendChild(modalTitle);
-//     modalContainer.appendChild(modalWork);
-//     modalWork.appendChild(modalImg);
-//   });
-// }
-
-// async function filterCategory(categoryId) {
-//   try {
-//     const response = await fetch(
-//       `http://localhost:5678/api/works?category=${categoryId}`
-//     );
-//     if (!response.ok) {
-//       throw new Error(`Error: ${response.status}`);
-//     }
-//     const data = await response.json();
-//     const url = `http://localhost:5678/api/works?category=${categoryId}`;
-//     console.log(url + category);
-//     displayFilterWorks(data);
-//   } catch (error) {
-//     console.error("erreur de récupération filtrage", error);
-//   }
-// }
-
-// function filterCategory(filterCategory) {
-//   const container = document.querySelector(".category");
-//   container.innerHTML = "";
-//   filterCategory.forEach((lienCategory) => {
-//     const lienCategory = document.createElement("a");
-//     (lienCategory.textContent = "Tous"),
-//       (lienCategory.textContent = "Objet"),
-//       (lienCategory.textContent = "Appartement"),
-//       (lienCategory.textContent = "Hotel & Restaurant");
-//     container.appendChild(lienCategory);
-//   });
-// }
-
-// function displayFilterWorks(filteredWorks) {
-//   const container = document.querySelector(".gallery");
-//   container.innerHTML = "";
-//   filteredWorks.forEach((work) => {
-//     const categoryElement = document.createElement("figure");
-//     categoryElement.textContent = `${work.categoryId}`;
-//     container.appendChild(categoryElement);
-//   });
-// }
-
-// function fetchTestCategory(categoryId) {
-//   const url = `http://localhost:5678/api/works?category=${categoryId}`;
-//   console.log(url);
-//   fetch(url)
-//     .then((response) => response.json())
-//     .then((data) => {
-//       console.log(data);
-//     });
-// }
-
-// let objetCategory = document.getElementById("objet");
-// objetCategory.addEventListener("click", () => {
-//   filterCategory();
-//   // fetchTestCategory(7);
-//   // fetch(`http://localhost:5678/api/works?category=${categoryId}`)
-//   //   .then((response) => response.json())
-//   //   .then((data) => {
-//   //     console.log(data);
-//   //   });
-// });
-// function displayFilterWorks(filteredWorks) {
-//   const container = document.querySelector(".gallery");
-//   container.innerHTML = "";
-//   filteredWorks.forEach((work) => {
-//     const figure = document.createElement("figure");
-//     figure.className = "work";
-//     figure.innerHTML = `
-//     <img src="${work.imageUrl}" alt="${work.title}" />
-//     <figcaption>${work.title}</figcaption>
-//   `;
-//     container.appendChild(figure);
-//   });
-// }
-
-// fetch("http://localhost:5678/api/works")
-//   .then((response) => response.json())
-//   .then((data) => {
-//     document.getElementById("objet").addEventListener("click", function () {
-//       const filteredWorks = filterCategory(data);
-//       displayFilterWorks(filteredWorks);
-//     });
-//     // category.addEventListener("change", function () {
-//     //   const filteredWorks = filterCategory(data, category.value);
-//   });
-
-// let objetCategory = document.getElementById("objet");
-// objetCategory.addEventListener("click", function () {
-//   fetch("http://localhost:5678/api/works?category=objet")
-//     .then((response) => response.json())
-//     .then((data) => {
-//       // console.log(data);
-//       document.querySelector(".gallery").innerHTML = "";
-
-//       //   for (let i = 0; i < data.length; i++) {
-//       //     const work = document.createElement("figure");
-//       //     work.className = "work";
-//       //     work.innerHTML = `
-//       //   <img src="${data[i].imageUrl}" alt="${data[i].title}" />
-//       //   <figcaption>${data[i].title}</figcaption>
-//       // `;
-//       //     document.querySelector(".gallery").appendChild(work);
-//       //   }
-//     });
-// });
-
-// category.addEventListener("change", async function filtre(category) {
-//   fetch(`http://localhost:5678/api/works?category=${category.value}`)
-//     .then((response) => response.json())
-//     .then((data) => {
-//       console.log(data);
-//       document.querySelector(".gallery").innerHTML = "";
-//       for (let i = 0; i < data.length; i++) {
-//         const work = document.createElement("figure");
-//         work.className = "work";
-//         work.innerHTML = `
-//       <img src="${data[i].imageUrl}" alt="${data[i].title}" />
-//       <figcaption>${data[i].title}</figcaption>
-//     `;
-//         document.querySelector(".gallery").appendChild(work);
-//       }
-//     });
-// });
