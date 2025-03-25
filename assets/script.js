@@ -119,6 +119,7 @@ function displayFilterWorks(filteredWorks) {
   filteredWorks.forEach((work) => {
     const figure = document.createElement("figure");
     figure.className = "work";
+    figure.dataset.id = work.id;
     figure.innerHTML = `
     <img src="${work.imageUrl}" alt="${work.title}" />
     <figcaption>${work.title}</figcaption>
@@ -132,6 +133,7 @@ function displayModalWorks(modalWorks) {
   for (let i = 0; i < modalWorks.length; i++) {
     const work = document.createElement("figure");
     work.className = "work";
+    work.dataset.id = modalWorks[i].id;
     work.innerHTML = `
   <img src="${modalWorks[i].imageUrl}" alt="${modalWorks[i].title}" />
   `;
@@ -146,7 +148,7 @@ function displayModalWorks(modalWorks) {
 }
 
 function deleteWork(id) {
-  fetch(`http://localhost:5678/api/works/${id}`, {
+   (`http://localhost:5678/api/works/${id}`, {
     method: "DELETE",
     headers: {
       Authorization: `Bearer ${localStorage.getItem("Token")}`,
