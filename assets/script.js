@@ -1,3 +1,4 @@
+//Initialisation de la page
 function Init() {
   fetchWorks();
   fetchCategories();
@@ -7,6 +8,7 @@ function Init() {
   uploadFormulaire();
 }
 
+//Gestion de l'authentification
 let logout = document.getElementById("connexion");
 let categoriesContainer = document.querySelector(".category");
 let bandeauHeader = document.getElementById("edit-mode");
@@ -24,6 +26,7 @@ if (localStorage.getItem("Token")) {
   modalContainer.style.display = "none";
 }
 
+//Gestion du bouton de connexion/déconnexion
 logout.addEventListener("click", function () {
   if (logout.innerText === "login") {
     window.location.href = "./login.html";
@@ -36,6 +39,7 @@ logout.addEventListener("click", function () {
   }
 });
 
+//Récupération des oeuvres et des catégories
 let allWorks = [];
 
 async function fetchWorks() {
@@ -66,6 +70,7 @@ async function fetchCategories() {
   }
 }
 
+//Création des filtres de catégories
 function createFilters(categories) {
   const container = document.querySelector(".category");
   container.innerHTML = "";
@@ -78,8 +83,12 @@ function createFilters(categories) {
       .querySelectorAll(".category a")
       .forEach((lien) => lien.classList.remove("active"));
     allButton.classList.add("active");
-    displayFilterWorks(allWorks);
+    // displayFilterWorks(allWorks);
+    // Afficher tous les travaux
+    document.querySelectorAll(".gallery .work").forEach(work => {
+      work.style.display = "block";
   });
+});
   container.appendChild(allButton);
 
   categories.forEach((category) => {
@@ -96,16 +105,24 @@ function createFilters(categories) {
   });
 }
 
+//Filtre des oeuvres par catégorie
 function filterCategory(categoryId) {
-  const filteredWorks = allWorks.filter((work) => {
-    console.log(`Comparaison ${work.categoryId} === ${categoryId}`);
-    return work.categoryId == categoryId;
+  // Au lieu de filtrer et réafficher, on parcourt tous les travaux et on ajuste leur visibilité
+  const allWorkElements = document.querySelectorAll(".gallery .work");
+  
+  allWorkElements.forEach(workElement => {
+    const workId = workElement.dataset.id;
+    const work = allWorks.find(w => w.id == workId);
+    
+    if (work.categoryId == categoryId) {
+      workElement.style.display = "block"; // Afficher les travaux de la catégorie sélectionnée
+    } else {
+      workElement.style.display = "none"; // Cacher les autres travaux
+    }
   });
-  console.log("Résultat filtrée :", filteredWorks);
-
-  displayFilterWorks(filteredWorks);
 }
 
+//Affichage des oeuvres filtrées
 function displayFilterWorks(filteredWorks) {
   const container = document.querySelector(".gallery");
   container.innerHTML = "";
@@ -128,6 +145,8 @@ function displayFilterWorks(filteredWorks) {
   });
 }
 
+//Gestion de la modal
+//Affichage de la modal
 function displayModalWorks(modalWorks) {
   document.querySelector(".workmodal").innerHTML = "";
   for (let i = 0; i < modalWorks.length; i++) {
@@ -147,8 +166,9 @@ function displayModalWorks(modalWorks) {
   }
 }
 
+//Suppression d'une oeuvre via l'API
 function deleteWork(id) {
-   (`http://localhost:5678/api/works/${id}`, {
+   fetch(`http://localhost:5678/api/works/${id}`, {
     method: "DELETE",
     headers: {
       Authorization: `Bearer ${localStorage.getItem("Token")}`,
@@ -161,6 +181,7 @@ function deleteWork(id) {
     .catch((error) => console.error("error suppression", error));
 }
 
+//Gestion de l'ouverure et de la fermeture de la modal
 const display = document.getElementById("photo");
 function removeModal() {
   const containerModal = document.querySelector(".container-modal");
@@ -215,6 +236,7 @@ function closeAllModals() {
   }
 }
 
+//Gestion du bouton de téléchargement d'image
 const fileInput = document.getElementById("file");
 const fileImg = document.getElementById("imagebtn");
 
@@ -294,6 +316,7 @@ const categoryInput = document.getElementById("category");
 let uploadForm = document.querySelector("form");
 const submitButton = uploadForm.querySelector('button[type="submit"]');
 
+// Fonction pour vérifier si les champs sont remplis
 function checkButton() {
   const photoNull = photoInput.files.length > 0;
   const titreNull = titleInput.value.trim() !== "";
@@ -312,6 +335,7 @@ function checkButton() {
   console.log("Bouton désactiver: ", submitButton.disabled);
 }
 
+//Envoi des données du formulaire
 async function addWork(formData) {
   try {
     if (!isAuthenticated()) {
@@ -343,6 +367,8 @@ async function addWork(formData) {
   }
 }
 
+//Configuration du formulaire
+//Validation et envoi du formulaire
 function uploadFormulaire() {
   submitButton.disabled = true;
 
