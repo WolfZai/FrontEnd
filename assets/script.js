@@ -83,7 +83,6 @@ function createFilters(categories) {
       .querySelectorAll(".category a")
       .forEach((lien) => lien.classList.remove("active"));
     allButton.classList.add("active");
-    // displayFilterWorks(allWorks);
     // Afficher tous les travaux
     document.querySelectorAll(".gallery .work").forEach(work => {
       work.style.display = "block";
@@ -217,6 +216,14 @@ function resetImageAndForm() {
     display.src = "";
     display.classList.remove("active");
   }
+  const ajoutPhotoDiv = document.querySelector(".ajoutphoto");
+  if (ajoutPhotoDiv) {
+    Array.from(ajoutPhotoDiv.children).forEach(child => {
+      if (child.id !== "photo") {
+        child.style.display = "";
+      }
+    });
+  }
 }
 function closeAllModals() {
   const containerModal = document.querySelector(".container-modal");
@@ -254,13 +261,28 @@ if (fileInput && fileImg) {
 
     if (file) {
       const reader = new FileReader();
-      reader.onload = function (e) {
-        const imageUrl = URL.createObjectURL(file);
-
-        display.src = imageUrl;
-        display.src = e.target.result;
-        display.classList.toggle("active");
-      };
+    reader.onload = function (e) {
+      // Récupérer la div ajoutphoto
+      const ajoutPhotoDiv = document.querySelector(".ajoutphoto");
+      
+      // Mettre à jour l'image
+      display.src = e.target.result;
+      display.classList.add("active");
+      display.style.maxWidth = "100%";
+      display.style.maxHeight = "100%";
+      display.style.objectFit = "contain";
+      display.style.margin = "auto";
+      
+      // Masquer tous les autres éléments dans la div ajoutphoto
+      if (ajoutPhotoDiv) {
+        // Sélectionner tous les enfants directs sauf l'image
+        const elementToHide = ajoutPhotoDiv.querySelectorAll(".icon-upload, .p, #imagebtn");
+        elementToHide.forEach(element => {
+          element.style.display = "none";
+        });
+        ajoutPhotoDiv.style.display = "flex";
+      }
+    };
       reader.readAsDataURL(file);
     }
   });
