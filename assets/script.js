@@ -425,7 +425,6 @@ function uploadFormulaire() {
       addWork(formData)
         .then((newWork) => {
           if (newWork) {
-            alert("Projet ajouté avec succès!");
 
             allWorks.push(newWork);
             displayFilterWorks(allWorks);
